@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Keke Multiplex</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,
+body{
+
+    width:100%;
+    height:100%;
+
+    overflow:hidden;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:#000;
+}
+
+body{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #111 0%,
+            #000 70%
+        );
+}
+
+/* =========================
+WARNING SCREEN
+========================= */
+
+.tap-screen{
+
+    position:fixed;
+
+    inset:0;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    flex-direction:column;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(120,0,0,.25),
+            #000 70%
+        );
+
+    z-index:999999;
+
+    cursor:pointer;
+
+    transition:
+        opacity 1s ease,
+        transform 1s ease,
+        filter 1s ease;
+}
+
+.tap-screen.hide{
+
+    opacity:0;
+
+    transform:
+        scale(1.12);
+
+    filter:
+        blur(12px);
+
+    pointer-events:none;
+}
+
+/* WARNING GLOW */
+
+.warning-glow{
+
+    position:absolute;
+
+    width:500px;
+
+    height:500px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,0,0,.35),
+            transparent 70%
+        );
+
+    filter:blur(50px);
+
+    animation:
+        pulseGlow 2s infinite;
+}
+
+/* WARNING TEXT */
+
+.tap-title{
+
+    position:relative;
+
+    z-index:2;
+
+    font-size:42px;
+
+    font-weight:900;
+
+    letter-spacing:3px;
+
+    white-space:nowrap;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #ffb3b3 0%,
+            #ff2e2e 50%,
+            #800000 100%
+        );
+
+    -webkit-background-clip:text;
+
+    -webkit-text-fill-color:transparent;
+
+    text-shadow:
+        0 0 10px rgba(255,0,0,.9),
+        0 0 25px rgba(255,0,0,.8),
+        0 0 50px rgba(255,0,0,.6);
+
+    animation:
+        warningPulse 1.5s infinite alternate;
+}
+
+/* TAP TEXT */
+
+.tap-sub{
+
+    position:relative;
+
+    z-index:2;
+
+    margin-top:18px;
+
+    color:#fff;
+
+    font-size:16px;
+
+    font-weight:700;
+
+    letter-spacing:6px;
+
+    text-transform:uppercase;
+
+    opacity:.9;
+
+    text-shadow:
+        0 0 10px rgba(255,255,255,.4);
+
+    animation:
+        blink 1s infinite;
+}
+
+/* =========================
+INTRO SCREEN
+========================= */
+
+.intro{
+
+    position:fixed;
+
+    inset:0;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    overflow:hidden;
+
+    z-index:99999;
+
+    opacity:0;
+
+    transform:
+        scale(1.06);
+
+    filter:
+        blur(15px);
+
+    transition:
+        opacity 1.2s ease,
+        transform 1.2s ease,
+        filter 1.2s ease;
+
+    pointer-events:none;
+}
+
+.intro.show{
+
+    opacity:1;
+
+    transform:
+        scale(1);
+
+    filter:
+        blur(0);
+
+    pointer-events:auto;
+}
+
+.flash{
+
+    position:absolute;
+
+    inset:0;
+
+    background:#fff;
+
+    opacity:0;
+
+    animation:
+        flash .35s ease;
+}
+
+.bg-glow{
+
+    position:absolute;
+
+    width:900px;
+
+    height:900px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,153,0,.14),
+            transparent 70%
+        );
+
+    filter:blur(40px);
+
+    animation:
+        pulse 2s infinite;
+}
+
+/* LOGO */
+
+.logo{
+
+    position:relative;
+
+    z-index:2;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    transform:
+        scale(.6);
+
+    opacity:0;
+
+    animation:
+        introAnim 1s
+        cubic-bezier(.2,.8,.2,1)
+        forwards;
+}
+
+.keke{
+
+    color:#fff;
+
+    font-size:88px;
+
+    font-weight:900;
+
+    letter-spacing:3px;
+
+    margin-right:18px;
+
+    text-shadow:
+        0 0 12px rgba(255,255,255,.5),
+        0 0 35px rgba(255,255,255,.2);
+}
+
+.multiplex{
+
+    background:#ff9900;
+
+    color:#000;
+
+    font-size:76px;
+
+    font-weight:900;
+
+    padding:
+        14px
+        26px;
+
+    border-radius:14px;
+
+    box-shadow:
+        0 0 30px rgba(255,153,0,.9),
+        0 0 80px rgba(255,153,0,.4);
+
+    animation:
+        multiplexGlow 1.5s infinite alternate;
+}
+
+/* SUB */
+
+.sub{
+
+    position:relative;
+
+    z-index:2;
+
+    margin-top:26px;
+
+    color:#888;
+
+    font-size:18px;
+
+    letter-spacing:7px;
+
+    opacity:0;
+
+    animation:
+        subAnim 1s ease forwards;
+
+    animation-delay:.7s;
+}
+
+/* =========================
+LOADER
+========================= */
+
+.loader{
+
+    position:relative;
+
+    z-index:2;
+
+    width:320px;
+
+    height:5px;
+
+    background:#111;
+
+    margin-top:42px;
+
+    border-radius:20px;
+
+    overflow:hidden;
+}
+
+.loader-bar{
+
+    width:0%;
+
+    height:100%;
+
+    background:#ff9900;
+
+    box-shadow:
+        0 0 12px rgba(255,153,0,.9);
+}
+
+/* START LOADING */
+
+.loader-bar.start{
+
+    animation:
+        loadBar 6s linear forwards;
+}
+
+/* =========================
+ANIMATIONS
+========================= */
+
+@keyframes introAnim{
+
+    0%{
+
+        transform:
+            scale(.6)
+            translateY(50px);
+
+        opacity:0;
+    }
+
+    60%{
+
+        transform:
+            scale(1.04)
+            translateY(0);
+
+        opacity:1;
+    }
+
+    100%{
+
+        transform:
+            scale(1);
+
+        opacity:1;
+    }
+}
+
+@keyframes subAnim{
+
+    from{
+
+        opacity:0;
+
+        transform:
+            translateY(20px);
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+@keyframes flash{
+
+    0%{
+        opacity:.9;
+    }
+
+    100%{
+        opacity:0;
+    }
+}
+
+@keyframes loadBar{
+
+    from{
+        width:0%;
+    }
+
+    to{
+        width:100%;
+    }
+}
+
+@keyframes blink{
+
+    0%{
+        opacity:1;
+    }
+
+    50%{
+        opacity:.3;
+    }
+
+    100%{
+        opacity:1;
+    }
+}
+
+@keyframes pulse{
+
+    0%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.08);
+    }
+
+    100%{
+        transform:scale(1);
+    }
+}
+
+@keyframes pulseGlow{
+
+    0%{
+
+        transform:
+            scale(1);
+
+        opacity:.7;
+    }
+
+    50%{
+
+        transform:
+            scale(1.1);
+
+        opacity:1;
+    }
+
+    100%{
+
+        transform:
+            scale(1);
+
+        opacity:.7;
+    }
+}
+
+@keyframes warningPulse{
+
+    0%{
+
+        transform:
+            scale(1);
+    }
+
+    100%{
+
+        transform:
+            scale(1.03);
+    }
+}
+
+@keyframes multiplexGlow{
+
+    0%{
+
+        box-shadow:
+            0 0 20px rgba(255,153,0,.6),
+            0 0 40px rgba(255,153,0,.3);
+    }
+
+    100%{
+
+        box-shadow:
+            0 0 35px rgba(255,153,0,1),
+            0 0 90px rgba(255,153,0,.6);
+    }
+}
+
+/* =========================
+MOBILE
+========================= */
+
+@media(max-width:900px){
+
+    .logo{
+
+        flex-direction:column;
+    }
+
+    .keke{
+
+        font-size:52px;
+
+        margin-right:0;
+
+        margin-bottom:14px;
+    }
+
+    .multiplex{
+
+        font-size:44px;
+    }
+
+    .loader{
+
+        width:220px;
+    }
+
+    .sub{
+
+        font-size:13px;
+
+        letter-spacing:4px;
+    }
+
+    .tap-title{
+
+        font-size:24px;
+
+        letter-spacing:1px;
+
+        text-align:center;
+    }
+
+    .tap-sub{
+
+        font-size:12px;
+
+        letter-spacing:4px;
+    }
+
+    .warning-glow{
+
+        width:320px;
+
+        height:320px;
+    }
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- WARNING -->
+
+<div
+class="tap-screen"
+id="tap-screen">
+
+    <div class="warning-glow"></div>
+
+    <div class="tap-title">
+        ⚠️ WARNING 18+ ONLY ⚠️
+    </div>
+
+    <div class="tap-sub">
+        TAP TO CONTINUE
+    </div>
+
+</div>
+
+<!-- INTRO -->
+
+<div
+class="intro"
+id="intro">
+
+    <div class="flash"></div>
+
+    <div class="bg-glow"></div>
+
+    <div class="logo">
+
+        <div class="keke">
+            KEKE
+        </div>
+
+        <div class="multiplex">
+            MULTIPLEX
+        </div>
+
+    </div>
+
+    <div class="sub">
+        PREMIUM EDGE NETWORK
+    </div>
+
+    <div class="loader">
+
+        <div
+        class="loader-bar"
+        id="loader-bar">
+        </div>
+
+    </div>
+
+</div>
+
+<!-- AUDIO -->
+
+<audio
+id="intro-audio"
+preload="auto"
+playsinline
+webkit-playsinline>
+
+<source
+src="https://dl.dropboxusercontent.com/scl/fi/xzo4e62ff4ibj0rar9k6r/246940-b59fc76a-4052-4387-a6a7-8cc68c73c760.mp3?rlkey=mg4mve3mdfa4b5h6wu4jw05k1&raw=1"
+type="audio/mpeg">
+
+</audio>
+
+<script>
+
+const tapScreen =
+document.getElementById(
+    "tap-screen"
+);
+
+const intro =
+document.getElementById(
+    "intro"
+);
+
+const audio =
+document.getElementById(
+    "intro-audio"
+);
+
+const loaderBar =
+document.getElementById(
+    "loader-bar"
+);
+
+let started = false;
+
+function startIntro(){
+
+    if(started) return;
+
+    started = true;
+
+    /* HIDE WARNING */
+
+    tapScreen.classList.add(
+        "hide"
+    );
+
+    /* SHOW INTRO */
+
+    setTimeout(()=>{
+
+        intro.classList.add(
+            "show"
+        );
+
+        /* START 6 SEC LOADER */
+
+        loaderBar.classList.add(
+            "start"
+        );
+
+        /* PLAY AUDIO */
+
+        audio.currentTime = 0;
+
+        audio.volume = 1;
+
+        audio.play().catch(err=>{
+
+            console.log(err);
+
+        });
+
+        /* REDIRECT AFTER
+           EXACTLY 6 SECONDS */
+
+        setTimeout(()=>{
+
+            audio.pause();
+
+            audio.currentTime = 0;
+
+            window.location.href =
+            "https://fikfap.com/?fbclid=IwY2xjawR4iIlleHRuA2FlbQIxMQBzcnRjBmFwcF9pZA8yNzUyNTQ2OTI1OTgyNzkAAR6WcUa-Io5fylYsPfkx-igWzG35Eg0wslBHzSqd_7xTOnUDWmdZY_NK-yxQBg_aem_Ke6uaZ6x6DLV7pjxH87ZTg";
+
+        },6000);
+
+    },1000);
+}
+
+tapScreen.addEventListener(
+    "click",
+    startIntro
+);
+
+tapScreen.addEventListener(
+    "touchstart",
+    startIntro
+);
+
+</script>
+
+</body>
+</html>
