@@ -137,71 +137,6 @@
           "tls"
         ]
       }
-    },
-    {
-      "port": 10089,
-      "listen": "127.0.0.1",
-      "protocol": "trojan",
-      "tag": "trojan-grpc",
-      "settings": {
-        "clients": [
-          {
-            "password": "Kekz69",
-            "level": 0
-          }
-        ]
-      },
-      "streamSettings": {
-        "network": "grpc",
-        "grpcSettings": {
-          "serviceName": "kekz-trojan-grpc"
-        },
-        "sockopt": {
-          "tcpFastOpen": true,
-          "tcpNoDelay": true,
-          "tcpKeepAliveInterval": 15
-        }
-      },
-      "sniffing": {
-        "enabled": true,
-        "destOverride": [
-          "http",
-          "tls"
-        ]
-      }
-    },
-    {
-      "port": 10090,
-      "listen": "127.0.0.1",
-      "protocol": "vless",
-      "tag": "vless-grpc",
-      "settings": {
-        "clients": [
-          {
-            "id": "kekz69",
-            "level": 0
-          }
-        ],
-        "decryption": "none"
-      },
-      "streamSettings": {
-        "network": "grpc",
-        "grpcSettings": {
-          "serviceName": "kekz-vless-grpc"
-        },
-        "sockopt": {
-          "tcpFastOpen": true,
-          "tcpNoDelay": true,
-          "tcpKeepAliveInterval": 15
-        }
-      },
-      "sniffing": {
-        "enabled": true,
-        "destOverride": [
-          "http",
-          "tls"
-        ]
-      }
     }
   ],
   "outbounds": [
@@ -231,9 +166,7 @@
           "vless-ws",
           "trojan-ws",
           "trojan-xh",
-          "vless-xh",
-          "trojan-grpc",
-          "vless-grpc"
+          "vless-xh"
         ],
         "outboundTag": "direct"
       }
