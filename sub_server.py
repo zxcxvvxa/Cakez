@@ -6,7 +6,6 @@ SECRET_PATH = "/sub"
 
 # Base configuration hosts
 SNI_HOST = "firebaseremoteconfigrealtime.googleapis.com"
-GRPC_SNI_HOST = "firebase-settings.crashlytics.com"
 TARGET_PORT = 443
 
 # Exact SSH link (kept unchanged)
@@ -48,18 +47,6 @@ def generate_subscription(host_header):
         f"&host={run_app_host}&sni={SNI_HOST}#vless-xhttp(%20auto%20%26%20packet-up%20only%20)"
     )
 
-    # gRPC Links (authority dynamically set to .run.app host)
-    trojan_grpc = (
-        f"trojan://Kekz69@{GRPC_SNI_HOST}:{TARGET_PORT}"
-        f"?mode=gun&security=tls&insecure=0&type=grpc&serviceName=kekz-trojan-grpc"
-        f"&allowInsecure=0&authority={run_app_host}&sni={GRPC_SNI_HOST}#trojan-grpc"
-    )
-    vless_grpc = (
-        f"vless://kekz69@{GRPC_SNI_HOST}:{TARGET_PORT}"
-        f"?mode=gun&security=tls&encryption=none&insecure=0&type=grpc&serviceName=kekz-vless-grpc"
-        f"&allowInsecure=0&authority={run_app_host}&sni={GRPC_SNI_HOST}#vless-grpc"
-    )
-
     # Combine all links into the payload
     raw_payload = (
         f"{EXACT_SSH_LINK}\n"
@@ -67,8 +54,6 @@ def generate_subscription(host_header):
         f"{vless_ws}\n"
         f"{trojan_xhttp}\n"
         f"{vless_xhttp}\n"
-        f"{trojan_grpc}\n"
-        f"{vless_grpc}\n"
     )
     return base64.b64encode(raw_payload.encode('utf-8'))
 
