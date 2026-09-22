@@ -1,0 +1,242 @@
+{
+  "log": {
+    "loglevel": "none"
+  },
+  "dns": {
+    "servers": [
+      "223.5.5.5",
+      "223.6.6.6"
+    ],
+    "strategy": "UseIPv4",
+    "disableCache": false,
+    "disableFallback": false
+  },
+  "inbounds": [
+    {
+      "port": 10085,
+      "listen": "127.0.0.1",
+      "protocol": "vless",
+      "tag": "vless-ws",
+      "settings": {
+        "clients": [
+          {
+            "id": "kekz69",
+            "level": 0
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+          "path": "/KekzVLWS"
+        },
+        "sockopt": {
+          "tcpFastOpen": true,
+          "tcpNoDelay": true,
+          "tcpKeepAliveInterval": 15
+        }
+      }
+    },
+    {
+      "port": 10086,
+      "listen": "127.0.0.1",
+      "protocol": "trojan",
+      "tag": "trojan-ws",
+      "settings": {
+        "clients": [
+          {
+            "password": "kekz69",
+            "level": 0
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "wsSettings": {
+          "path": "/KekzTRWS"
+        },
+        "sockopt": {
+          "tcpFastOpen": true,
+          "tcpNoDelay": true,
+          "tcpKeepAliveInterval": 15
+        }
+      }
+    },
+    {
+      "port": 10087,
+      "listen": "127.0.0.1",
+      "protocol": "trojan",
+      "tag": "trojan-xh",
+      "settings": {
+        "clients": [
+          {
+            "password": "Kekz69",
+            "level": 0
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "xhttpSettings": {
+          "path": "/KekzTRXH",
+          "mode": "auto"
+        },
+        "sockopt": {
+          "tcpFastOpen": true,
+          "tcpNoDelay": true,
+          "tcpKeepAliveInterval": 15,
+          "tcpKeepAliveIdle": 30,
+          "tcpKeepAliveCount": 3,
+          "tcpQuickAck": true,
+          "tcpcongestion": "bbr"
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ]
+      }
+    },
+    {
+      "port": 10088,
+      "listen": "127.0.0.1",
+      "protocol": "vless",
+      "tag": "vless-xh",
+      "settings": {
+        "clients": [
+          {
+            "id": "kekz69",
+            "level": 0
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "xhttp",
+        "xhttpSettings": {
+          "path": "/KekzVLXH",
+          "mode": "auto"
+        },
+        "sockopt": {
+          "tcpFastOpen": true,
+          "tcpNoDelay": true,
+          "tcpKeepAliveInterval": 15,
+          "tcpKeepAliveIdle": 30,
+          "tcpKeepAliveCount": 3,
+          "tcpQuickAck": true,
+          "tcpcongestion": "bbr"
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ]
+      }
+    },
+    {
+      "port": 10089,
+      "listen": "127.0.0.1",
+      "protocol": "trojan",
+      "tag": "trojan-grpc",
+      "settings": {
+        "clients": [
+          {
+            "password": "Kekz69",
+            "level": 0
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "grpc",
+        "grpcSettings": {
+          "serviceName": "kekz-trojan-grpc"
+        },
+        "sockopt": {
+          "tcpFastOpen": true,
+          "tcpNoDelay": true,
+          "tcpKeepAliveInterval": 15
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ]
+      }
+    },
+    {
+      "port": 10090,
+      "listen": "127.0.0.1",
+      "protocol": "vless",
+      "tag": "vless-grpc",
+      "settings": {
+        "clients": [
+          {
+            "id": "kekz69",
+            "level": 0
+          }
+        ],
+        "decryption": "none"
+      },
+      "streamSettings": {
+        "network": "grpc",
+        "grpcSettings": {
+          "serviceName": "kekz-vless-grpc"
+        },
+        "sockopt": {
+          "tcpFastOpen": true,
+          "tcpNoDelay": true,
+          "tcpKeepAliveInterval": 15
+        }
+      },
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ]
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "protocol": "freedom",
+      "tag": "direct",
+      "settings": {
+        "domainStrategy": "UseIPv4"
+      }
+    },
+    {
+      "protocol": "blackhole",
+      "tag": "block",
+      "settings": {
+        "response": {
+          "type": "none"
+        }
+      }
+    }
+  ],
+  "routing": {
+    "domainStrategy": "AsIs",
+    "rules": [
+      {
+        "type": "field",
+        "inboundTag": [
+          "vless-ws",
+          "trojan-ws",
+          "trojan-xh",
+          "vless-xh",
+          "trojan-grpc",
+          "vless-grpc"
+        ],
+        "outboundTag": "direct"
+      }
+    ]
+  }
+}
