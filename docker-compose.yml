@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  aetherx:
+    image: ytrew777/kekz:latest
+    container_name: kekz
+    network_mode: host
+    restart: always
+    pull_policy: always
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+        compress: "true"
+
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: "2G"
